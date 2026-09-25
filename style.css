@@ -1,0 +1,1891 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: #fffdfa;
+  color: #171717;
+  overflow: hidden;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+/* =========================================================
+   SCREENS
+========================================================= */
+
+.screen {
+  width: 100%;
+  height: 100vh;
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* =========================================================
+   HOME
+========================================================= */
+
+#homeScreen {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #fffdfa;
+}
+
+/* =========================================================
+   HOME CONTENT
+========================================================= */
+
+.home-content {
+  width: 100%;
+  height: calc(100vh - 65px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+}
+
+/* =========================================================
+   FANDOM CAROUSEL
+========================================================= */
+
+.vault-carousel {
+  position: relative;
+
+  width: 100%;
+  max-width: none;
+
+  min-width: 0;
+}
+
+/* =========================================================
+   FANDOM TRACK
+========================================================= */
+
+.fandom-track {
+  display: flex;
+
+  align-items: center;
+
+  gap: 52px;
+
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 40px 80px 95px;
+
+  scroll-behavior: smooth;
+
+  scrollbar-width: none;
+
+  scroll-snap-type: x proximity;
+}
+
+.fandom-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================================================
+   FANDOM CARD
+========================================================= */
+
+.fandom-card {
+  flex: 0 0 auto;
+
+  width: 210px;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+
+  scroll-snap-align: center;
+}
+
+.fandom-card:hover {
+  transform: translateY(-7px);
+}
+
+/* =========================================================
+   FANDOM CIRCLE
+========================================================= */
+
+.fandom-circle {
+  position: relative;
+
+  width: 210px;
+  height: 210px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  background: #e9e6e1;
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   FANDOM IMAGE
+========================================================= */
+
+.fandom-circle img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================================================
+   IMAGE PLACEHOLDER
+========================================================= */
+
+.image-placeholder {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #aaa;
+}
+
+.image-placeholder svg {
+  stroke-width: 1.3;
+}
+
+/* Hide placeholder when image exists */
+
+.fandom-circle img:not([src=""]) + .image-placeholder {
+  display: none;
+}
+
+/* =========================================================
+   MANAGE WORLDS MODAL
+========================================================= */
+
+.manage-worlds-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(20, 20, 20, 0.22);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.manage-worlds-card {
+  width: min(480px, 100%);
+  max-height: min(620px, 85vh);
+
+  display: flex;
+  flex-direction: column;
+
+  background: #fffdfa;
+
+  border: 1px solid #e7e3dc;
+  border-radius: 24px;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.16);
+
+  overflow: hidden;
+}
+
+.manage-worlds-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 24px;
+
+  border-bottom: 1px solid #eeeae4;
+}
+
+.manage-worlds-header h3 {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.manage-worlds-list {
+  display: flex;
+  flex-direction: column;
+
+  padding: 10px 14px 14px;
+
+  overflow-y: auto;
+}
+
+.manage-world-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px;
+
+  border-radius: 14px;
+
+  cursor: grab;
+
+  transition: background 0.2s ease;
+}
+
+.manage-world-item:hover {
+  background: #f7f4ef;
+}
+
+.manage-world-item:active {
+  cursor: grabbing;
+}
+
+.manage-world-drag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #aaa;
+}
+
+.manage-world-drag svg {
+  width: 17px;
+  height: 17px;
+}
+
+.manage-world-preview {
+  width: 48px;
+  height: 48px;
+
+  flex: 0 0 48px;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  background: #eeeae4;
+}
+
+.manage-world-preview img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.manage-world-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.manage-world-name {
+  display: block;
+
+  overflow: hidden;
+
+  font-size: 13px;
+  color: #333;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.manage-world-edit,
+.manage-world-delete {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 34px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #888;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.manage-world-edit:hover {
+  background: #eeebe5;
+  color: #222;
+}
+
+.manage-world-delete:hover {
+  background: #f3e7e4;
+  color: #9a5c55;
+}
+
+.manage-world-edit svg,
+.manage-world-delete svg {
+  width: 16px;
+  height: 16px;
+}
+
+.manage-world-arrows {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.manage-world-arrows button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  color: #777;
+}
+
+.manage-world-arrows button:hover {
+  background: #eeeae4;
+  color: #222;
+}
+
+.manage-world-arrows button:active {
+  transform: scale(0.9);
+}
+
+.manage-world-arrows button svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* =========================================================
+   FANDOM NAME
+========================================================= */
+
+.fandom-card h3 {
+  margin-top: 18px;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  color: #242424;
+}
+
+/* =========================================================
+   ADD FANDOM CARD
+========================================================= */
+
+.add-fandom-card {
+  flex: 0 0 auto;
+
+  width: 210px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #888;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  transition:
+    transform 0.25s ease,
+    color 0.2s ease;
+
+  scroll-snap-align: center;
+}
+
+.add-fandom-card:hover {
+  transform: translateY(-7px);
+
+  color: #222;
+}
+
+/* Add Fandom circle */
+
+.add-fandom-circle {
+  width: 210px;
+  height: 210px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  border: 1px dashed #d8d3cb;
+
+  background: radial-gradient(circle at center, #faf9f6, #f1eee9);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.add-fandom-circle svg {
+  stroke-width: 1.4;
+
+  color: #999;
+
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.add-fandom-card:hover .add-fandom-circle {
+  background: radial-gradient(circle at center, #fffefa, #ece8e2);
+
+  border-color: #bbb5ac;
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07);
+}
+
+.add-fandom-card:hover .add-fandom-circle svg {
+  color: #555;
+}
+
+/* Add Fandom text */
+
+.add-fandom-label {
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  color: inherit;
+}
+
+/* =========================================================
+   HOME TOP ACTIONS
+========================================================= */
+
+.home-top-actions {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* =========================================================
+   TOP RIGHT ADD WORLD
+========================================================= */
+
+.add-fandom-top {
+  height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 14px 0 11px;
+
+  border: 1px solid #e5e1da;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.9);
+  color: #666;
+
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.1px;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+/* Lucide plus */
+
+.add-fandom-top svg {
+  width: 17px;
+  height: 17px;
+
+  stroke-width: 1.6;
+
+  color: #666;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Hover */
+
+.add-fandom-top:hover {
+  background: #faf8f4;
+
+  border-color: #d8d3cb;
+
+  color: #222;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.add-fandom-top:hover svg {
+  color: #222;
+
+  transform: rotate(90deg);
+}
+
+/* =========================================================
+   EDIT WORLDS BUTTON
+========================================================= */
+
+.edit-worlds-top {
+  width: 40px;
+  height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #e5e1da;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.9);
+  color: #777;
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.edit-worlds-top svg {
+  width: 17px;
+  height: 17px;
+
+  stroke-width: 1.6;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.edit-worlds-top:hover {
+  background: #faf8f4;
+  border-color: #d8d3cb;
+  color: #222;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.edit-worlds-top:hover svg {
+  color: #222;
+}
+/* =========================================================
+   CAROUSEL CONTROLS
+========================================================= */
+
+.carousel-controls {
+  position: fixed;
+
+  left: 50%;
+  bottom: 48px;
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  z-index: 100;
+}
+
+/* Arrow button */
+
+.carousel-arrow {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e5e1da;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  color: #555;
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.carousel-arrow svg {
+  width: 16px;
+  height: 16px;
+
+  stroke-width: 1.7;
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  background: #f7f4ef;
+
+  border-color: #d4cfc7;
+
+  color: #222;
+
+  transform: translateY(-2px);
+}
+
+.carousel-arrow:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.3;
+
+  cursor: default;
+
+  box-shadow: none;
+}
+/* =========================================================
+   HOME FOOTER
+========================================================= */
+
+.home-footer {
+  position: fixed;
+
+  left: 0;
+  bottom: 20px;
+
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  pointer-events: none;
+
+  font-size: 11px;
+
+  color: #999;
+
+  letter-spacing: 1px;
+}
+
+/* =========================================================
+   ADD FANDOM MODAL
+========================================================= */
+
+.fandom-modal {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 300;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(20, 20, 20, 0.22);
+
+  backdrop-filter: blur(8px);
+
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* =========================================================
+   ADD FANDOM CARD
+========================================================= */
+
+.fandom-modal-card {
+  width: min(430px, 100%);
+
+  background: #fffdfa;
+
+  border: 1px solid #e7e3dc;
+
+  border-radius: 24px;
+
+  padding: 24px;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.16);
+}
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.fandom-modal-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+}
+
+.modal-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 9px;
+
+  letter-spacing: 3px;
+
+  color: #999;
+}
+
+.fandom-modal-header h3 {
+  font-size: 28px;
+
+  font-weight: 400;
+
+  line-height: 1.1;
+}
+
+/* =========================================================
+   MODAL CLOSE
+========================================================= */
+
+.modal-close {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #f3f0eb;
+
+  color: #555;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #e8e4de;
+
+  color: #111;
+}
+
+/* =========================================================
+   FANDOM FORM
+========================================================= */
+
+.fandom-field {
+  margin-bottom: 18px;
+}
+
+.fandom-field label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 11px;
+
+  color: #777;
+}
+
+.fandom-field input {
+  width: 100%;
+  height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid #ddd8d0;
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #faf9f6;
+
+  color: #222;
+
+  font-size: 12px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.fandom-field input::placeholder {
+  color: #aaa;
+}
+
+.fandom-field input:focus {
+  border-color: #999;
+
+  background: #fff;
+}
+
+/* =========================================================
+   FANDOM IMAGE PREVIEW
+========================================================= */
+
+.fandom-image-preview {
+  width: 100%;
+  height: 220px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border: 1px dashed #d8d3cb;
+
+  border-radius: 16px;
+
+  background: #f7f5f1;
+}
+
+.fandom-image-preview img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================================================
+   PREVIEW PLACEHOLDER
+========================================================= */
+
+.preview-placeholder {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  color: #aaa;
+
+  text-align: center;
+}
+
+.preview-placeholder svg {
+  stroke-width: 1.4;
+}
+
+.preview-placeholder p {
+  font-size: 11px;
+}
+
+/* =========================================================
+   IMAGE ERROR
+========================================================= */
+
+.image-error {
+  min-height: 17px;
+
+  margin-top: 8px;
+
+  font-size: 11px;
+
+  color: #a56b6b;
+}
+
+/* =========================================================
+   MODAL ACTIONS
+========================================================= */
+
+.fandom-modal-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.fandom-modal-actions button {
+  height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 17px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   SECONDARY BUTTON
+========================================================= */
+
+.modal-secondary {
+  background: #f1eee9;
+
+  color: #555;
+}
+
+.modal-secondary:hover {
+  background: #e8e4de;
+}
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.modal-primary {
+  background: #191919;
+
+  color: #fff;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.modal-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.modal-primary:disabled {
+  opacity: 0.35;
+
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+.hidden {
+  display: none !important;
+}
+
+/* =========================================================
+   VAULT SCREEN
+========================================================= */
+
+.vault-screen {
+  position: relative;
+
+  background: #faf9f6;
+}
+
+/* =========================================================
+   VAULT HEADER
+========================================================= */
+
+.vault-header {
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  border-bottom: 1px solid #e5e2dc;
+
+  position: relative;
+
+  z-index: 20;
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.vault-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.vault-title h2 {
+  font-weight: 400;
+
+  font-size: 22px;
+}
+
+.small-label {
+  font-size: 9px;
+
+  letter-spacing: 3px;
+
+  color: #999;
+}
+
+/* =========================================================
+   VAULT ICON BUTTONS
+========================================================= */
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #444;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: #f1eee9;
+
+  color: #111;
+}
+
+/* =========================================================
+   VAULT ACTIONS
+========================================================= */
+
+.vault-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+}
+
+#zoomValue {
+  min-width: 42px;
+
+  text-align: center;
+
+  font-size: 11px;
+
+  color: #777;
+}
+
+/* =========================================================
+   INFINITE CANVAS
+========================================================= */
+
+.canvas-viewport {
+  position: absolute;
+
+  top: 70px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  overflow: hidden;
+
+  cursor: grab;
+}
+
+.canvas-viewport.grabbing {
+  cursor: grabbing;
+}
+
+.infinite-canvas {
+  position: absolute;
+
+  width: 5000px;
+  height: 5000px;
+
+  left: -2000px;
+  top: -2000px;
+
+  transform-origin: center;
+
+  background-color: #fff;
+
+  background-image: radial-gradient(
+    circle,
+    rgba(60, 60, 60, 0.19) 1px,
+    transparent 1px
+  );
+
+  background-size: 22px 22px;
+}
+
+/* =========================================================
+   CANVAS HINT
+========================================================= */
+
+.canvas-hint {
+  position: absolute;
+
+  left: 2500px;
+  top: 2420px;
+
+  color: rgba(0, 0, 0, 0.18);
+
+  font-size: 55px;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   CANVAS ELEMENTS
+========================================================= */
+
+.canvas-item {
+  position: absolute;
+
+  cursor: move;
+
+  user-select: none;
+
+  transform-origin: center;
+}
+
+.canvas-item.selected {
+  outline: 2px solid rgba(50, 50, 50, 0.35);
+
+  outline-offset: 5px;
+}
+
+.canvas-item img {
+  display: block;
+
+  max-width: 400px;
+  max-height: 400px;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================================
+   TEXT ELEMENTS
+========================================================= */
+
+.text-item {
+  min-width: 100px;
+
+  max-width: 350px;
+
+  padding: 10px 14px;
+
+  font-size: 25px;
+
+  line-height: 1.25;
+
+  color: #242424;
+}
+
+.text-item.small {
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+}
+
+/* =========================================================
+   PIN MARK
+========================================================= */
+
+.pin-mark {
+  position: absolute;
+
+  top: -10px;
+  left: 50%;
+
+  width: 12px;
+  height: 12px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background: #c5b49b;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================================
+   FLOATING TOOLBAR
+========================================================= */
+
+.floating-toolbar {
+  position: fixed;
+
+  left: 50%;
+  bottom: 25px;
+
+  z-index: 100;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 8px;
+
+  transform: translateX(-50%);
+
+  border: 1px solid #e8e4dd;
+
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.13);
+
+  backdrop-filter: blur(15px);
+
+  -webkit-backdrop-filter: blur(15px);
+}
+
+/* =========================================================
+   TOOL BUTTON
+========================================================= */
+
+.tool-button {
+  min-width: 82px;
+  height: 58px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  border: none;
+
+  border-radius: 18px;
+
+  background: transparent;
+
+  color: #777;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.tool-button:hover {
+  background: #f5f2ed;
+
+  color: #333;
+}
+
+.tool-button.active {
+  background: #eeebe5;
+
+  color: #111;
+}
+
+.tool-button svg {
+  stroke-width: 1.7;
+}
+
+/* =========================================================
+   EDIT PANEL
+========================================================= */
+
+.edit-panel {
+  position: fixed;
+
+  left: 50%;
+  bottom: 105px;
+
+  z-index: 99;
+
+  display: flex;
+
+  gap: 6px;
+
+  padding: 7px;
+
+  transform: translateX(-50%);
+
+  background: #fff;
+
+  border: 1px solid #e7e3dd;
+
+  border-radius: 15px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.edit-panel button {
+  border: none;
+
+  background: #f5f2ed;
+
+  padding: 9px 14px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.edit-panel button:hover {
+  background: #e9e5df;
+}
+
+/* =========================================================
+   VIEW MODE
+========================================================= */
+
+.vault-screen.view-mode .canvas-viewport {
+  cursor: grab;
+}
+
+.vault-screen.view-mode .canvas-item {
+  cursor: default;
+}
+
+.vault-screen.view-mode .floating-toolbar {
+  opacity: 0.45;
+}
+
+.vault-screen.view-mode .floating-toolbar .tool-button:not(#viewButton) {
+  display: none;
+}
+
+/* =========================================================
+   IMAGE MODAL
+   Existing Add Image modal inside Vault
+========================================================= */
+
+.image-modal {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 300;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(20, 20, 20, 0.22);
+
+  backdrop-filter: blur(8px);
+
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.image-modal-card {
+  width: min(430px, 100%);
+
+  padding: 24px;
+
+  background: #fffdfa;
+
+  border: 1px solid #e7e3dc;
+
+  border-radius: 24px;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.16);
+}
+
+.image-modal-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+}
+
+.image-modal-header h3 {
+  font-size: 28px;
+
+  font-weight: 400;
+}
+
+.image-url-section label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 11px;
+
+  color: #777;
+}
+
+#imageURLInput {
+  width: 100%;
+  height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid #ddd8d0;
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #faf9f6;
+
+  font-family: inherit;
+
+  font-size: 12px;
+}
+
+#imageURLInput:focus {
+  border-color: #999;
+
+  background: #fff;
+}
+
+.image-preview {
+  width: 100%;
+  height: 230px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  margin-top: 18px;
+
+  border: 1px dashed #d8d3cb;
+
+  border-radius: 16px;
+
+  background: #f7f5f1;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.image-modal-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.image-modal-actions button {
+  height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 18px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  body {
+    overflow: hidden;
+  }
+
+  /* -------------------------------------------------------
+     ADD FANDOM MODAL
+  ------------------------------------------------------- */
+
+  .fandom-modal {
+    align-items: center;
+
+    padding: 12px;
+  }
+
+  .fandom-modal-card {
+    width: 100%;
+
+    padding: 20px;
+
+    border-radius: 24px 24px 18px 18px;
+  }
+
+  .fandom-modal-header {
+    margin-bottom: 20px;
+  }
+
+  .fandom-modal-header h3 {
+    font-size: 25px;
+  }
+
+  .fandom-image-preview {
+    height: 200px;
+  }
+
+  .fandom-modal-actions {
+    margin-top: 8px;
+  }
+
+  /* -------------------------------------------------------
+     VAULT HEADER
+  ------------------------------------------------------- */
+
+  .vault-header {
+    height: 62px;
+
+    padding: 0 12px;
+  }
+
+  .vault-title {
+    gap: 7px;
+
+    max-width: 220px;
+  }
+
+  .vault-title h2 {
+    font-size: 17px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+
+  .small-label {
+    display: none;
+  }
+
+  .vault-actions {
+    gap: 0;
+  }
+
+  .vault-actions .icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .canvas-viewport {
+    top: 62px;
+  }
+
+  /* -------------------------------------------------------
+     FLOATING TOOLBAR
+  ------------------------------------------------------- */
+
+  .floating-toolbar {
+    left: 12px;
+    right: 12px;
+    bottom: 14px;
+
+    width: auto;
+
+    transform: none;
+
+    justify-content: space-around;
+
+    border-radius: 22px;
+  }
+
+  .tool-button {
+    min-width: 0;
+
+    flex: 1;
+
+    height: 55px;
+  }
+
+  .tool-button span {
+    font-size: 9px;
+  }
+
+  /* -------------------------------------------------------
+     EDIT PANEL
+  ------------------------------------------------------- */
+
+  .edit-panel {
+    bottom: 88px;
+
+    width: max-content;
+  }
+
+  /* -------------------------------------------------------
+     IMAGE MODAL
+  ------------------------------------------------------- */
+
+  .image-modal {
+    align-items: flex-end;
+
+    padding: 12px;
+  }
+
+  .image-modal-card {
+    width: 100%;
+
+    padding: 20px;
+
+    border-radius: 24px 24px 18px 18px;
+  }
+
+  .image-preview {
+    height: 200px;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-content {
+    height: calc(100vh - 55px);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vault-carousel {
+    width: 100%;
+  }
+
+  .fandom-track {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 40px 0 100px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+  }
+
+  .fandom-card,
+  .add-fandom-card {
+    flex: 0 0 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    scroll-snap-align: center;
+  }
+
+  .fandom-circle,
+  .add-fandom-circle {
+    width: 220px;
+    height: 220px;
+  }
+
+  .fandom-card h3 {
+    font-size: 13px;
+    margin-top: 18px;
+  }
+
+  /* Add World */
+  /* Home top actions */
+
+  .home-top-actions {
+    top: 17px;
+    right: 18px;
+    gap: 7px;
+  }
+
+  .edit-worlds-top {
+    width: 40px;
+    height: 40px;
+  }
+
+  .add-fandom-top {
+    height: 40px;
+    padding: 0 13px 0 11px;
+  }
+
+  .add-fandom-top svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  /* Mobile arrows */
+  .carousel-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 42px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .carousel-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .home-footer {
+    bottom: 12px;
+    font-size: 11px;
+  }
+}

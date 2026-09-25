@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vault</title>
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Lucide Icons -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Main CSS -->
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- =====================================================
+       HOME
+  ====================================================== -->
+
+    <section id="homeScreen" class="screen active">
+      <!-- =========================
+         ADD FANDOM
+    ========================== -->
+      <div class="home-top-actions">
+        <button
+          id="editWorldsButton"
+          class="edit-worlds-top"
+          aria-label="Edit Worlds"
+        >
+          <i data-lucide="pencil" size="17"></i>
+        </button>
+
+        <button id="addFandomTop" class="add-fandom-top" aria-label="Add World">
+          <i data-lucide="plus" size="18"></i>
+          <span>Add World</span>
+        </button>
+      </div>
+
+      <!-- =========================
+         FANDOM AREA
+    ========================== -->
+
+      <main class="home-content">
+        <div class="vault-carousel">
+          <!-- FANDOM TRACK -->
+
+          <div class="fandom-track" id="fandomTrack">
+            <!-- =========================
+               THE APOTHECARY DIARIES
+          ========================== -->
+
+            <!-- ADD FANDOM CARD -->
+
+            <button
+              id="addFandomCard"
+              class="add-fandom-card"
+              aria-label="Add Fandom"
+            >
+              <span class="add-fandom-circle">
+                <i data-lucide="plus" size="28"></i>
+              </span>
+
+              <span class="add-fandom-label"> Add Fandom </span>
+            </button>
+          </div>
+
+          <!-- =========================
+             CAROUSEL ARROWS
+        ========================== -->
+
+          <div class="carousel-controls">
+            <button
+              id="scrollLeft"
+              class="carousel-arrow"
+              aria-label="Previous fandom"
+            >
+              <i data-lucide="arrow-left" size="17"></i>
+            </button>
+
+            <button
+              id="scrollRight"
+              class="carousel-arrow"
+              aria-label="Next fandom"
+            >
+              <i data-lucide="arrow-right" size="17"></i>
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <!-- =========================
+         FOOTER
+    ========================== -->
+
+      <footer class="home-footer">
+        <span> Your Worlds, your Vault. </span>
+      </footer>
+
+      <!-- =====================================================
+         ADD FANDOM MODAL
+    ====================================================== -->
+
+      <div id="fandomModal" class="fandom-modal hidden">
+        <div class="fandom-modal-card">
+          <!-- HEADER -->
+
+          <div class="fandom-modal-header">
+            <div>
+              <span class="modal-label"> CREATE YOUR WORLD </span>
+
+              <h3>Add Fandom</h3>
+            </div>
+
+            <button
+              id="closeFandomModal"
+              class="modal-close"
+              aria-label="Close"
+            >
+              <i data-lucide="x" size="18"></i>
+            </button>
+          </div>
+
+          <!-- =========================
+             WORLD NAME
+        ========================== -->
+
+          <div class="fandom-field">
+            <label for="fandomNameInput"> World Name </label>
+
+            <input
+              type="text"
+              id="fandomNameInput"
+              placeholder="e.g. The Apothecary Diaries"
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- =========================
+             IMAGE URL
+        ========================== -->
+
+          <div class="fandom-field">
+            <label for="fandomImageInput"> Cover Image </label>
+
+            <input
+              type="url"
+              id="fandomImageInput"
+              placeholder="Paste image URL..."
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- =========================
+             IMAGE PREVIEW
+        ========================== -->
+
+          <div id="fandomImagePreview" class="fandom-image-preview">
+            <div class="preview-placeholder">
+              <i data-lucide="image" size="25"></i>
+
+              <p>Image preview</p>
+            </div>
+          </div>
+
+          <!-- IMAGE ERROR -->
+
+          <p id="fandomImageError" class="image-error"></p>
+
+          <!-- =========================
+             ACTIONS
+        ========================== -->
+
+          <div class="fandom-modal-actions">
+            <button id="cancelFandom" class="modal-secondary">Cancel</button>
+
+            <button id="createFandom" class="modal-primary" disabled>
+              <i data-lucide="plus" size="14"></i>
+
+              <span> Add Fandom </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="manageWorldsModal" class="manage-worlds-modal hidden">
+        <div class="manage-worlds-card">
+          <div class="manage-worlds-header">
+            <div>
+              <span class="modal-label">YOUR WORLDS</span>
+              <h3>Edit Worlds</h3>
+            </div>
+
+            <button
+              id="closeManageWorlds"
+              class="modal-close"
+              aria-label="Close"
+            >
+              <i data-lucide="x" size="18"></i>
+            </button>
+          </div>
+
+          <div id="manageWorldsList" class="manage-worlds-list">
+            <!-- JavaScript will add worlds here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+       FANDOM SPACE
+  ====================================================== -->
+
+    <section id="vaultScreen" class="screen vault-screen">
+      <!-- =========================
+         VAULT HEADER
+    ========================== -->
+
+      <header class="vault-header">
+        <button id="backHome" class="icon-btn" aria-label="Back">
+          <i data-lucide="arrow-left" size="19"></i>
+        </button>
+
+        <div class="vault-title">
+          <span class="small-label"> VAULT </span>
+
+          <h2 id="vaultName">The Apothecary Diaries</h2>
+        </div>
+
+        <div class="vault-actions">
+          <button id="zoomOut" class="icon-btn" aria-label="Zoom out">
+            <i data-lucide="minus" size="17"></i>
+          </button>
+
+          <span id="zoomValue"> 100% </span>
+
+          <button id="zoomIn" class="icon-btn" aria-label="Zoom in">
+            <i data-lucide="plus" size="17"></i>
+          </button>
+
+          <button id="clearVault" class="icon-btn" aria-label="More options">
+            <button
+              id="centerCanvas"
+              class="icon-btn"
+              aria-label="Center canvas"
+            >
+              <i data-lucide="crosshair" size="19"></i>
+            </button>
+          </button>
+        </div>
+      </header>
+
+      <!-- =========================
+         CANVAS
+    ========================== -->
+
+      <main id="canvasViewport" class="canvas-viewport">
+        <div id="infiniteCanvas" class="infinite-canvas">
+          <div id="canvasHint" class="canvas-hint"></div>
+        </div>
+      </main>
+
+      <!-- =========================
+         FLOATING TOOLBAR
+    ========================== -->
+
+      <div class="floating-toolbar">
+        <button id="uploadButton" class="tool-button">
+          <i data-lucide="image-plus" size="18"></i>
+
+          <span> Add Image </span>
+        </button>
+
+        <button id="textButton" class="tool-button">
+          <i data-lucide="type" size="18"></i>
+
+          <span> Add Text </span>
+        </button>
+
+        <button id="editButton" class="tool-button active">
+          <i data-lucide="move" size="18"></i>
+
+          <span> Edit / Move </span>
+        </button>
+
+        <button id="viewButton" class="tool-button">
+          <i data-lucide="eye" size="18"></i>
+
+          <span> View / Pin </span>
+        </button>
+      </div>
+
+      <!-- =========================
+         ADD IMAGE MODAL
+    ========================== -->
+
+      <div id="imageModal" class="image-modal hidden">
+        <div class="image-modal-card">
+          <div class="image-modal-header">
+            <div>
+              <span class="modal-label"> ADD TO VAULT </span>
+
+              <h3>Add Image</h3>
+            </div>
+
+            <button id="closeImageModal" class="modal-close" aria-label="Close">
+              <i data-lucide="x" size="18"></i>
+            </button>
+          </div>
+
+          <div class="image-url-section">
+            <label for="imageURLInput"> Image URL </label>
+
+            <input
+              type="url"
+              id="imageURLInput"
+              placeholder="Paste image URL..."
+              autocomplete="off"
+            />
+          </div>
+
+          <div id="imagePreview" class="image-preview">
+            <div class="preview-placeholder">
+              <i data-lucide="image" size="25"></i>
+
+              <p>Image preview</p>
+            </div>
+          </div>
+
+          <p id="imageError" class="image-error"></p>
+
+          <div class="image-modal-actions">
+            <button id="cancelImage" class="modal-secondary">Cancel</button>
+
+            <button id="addImageConfirm" class="modal-primary" disabled>
+              <i data-lucide="plus" size="14"></i>
+
+              <span> Add Image </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================
+         EDIT PANEL
+    ========================== -->
+
+      <div id="editPanel" class="edit-panel hidden">
+        <button id="editText">Edit Text</button>
+
+        <button id="deleteElement">Delete</button>
+
+        <button id="pinElement">Pin</button>
+      </div>
+    </section>
+
+    <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+
+    <script src="script.js"></script>
+
+    <!-- Activate Lucide -->
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
