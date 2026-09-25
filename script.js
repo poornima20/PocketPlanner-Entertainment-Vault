@@ -128,33 +128,60 @@ let startPanX = 0;
 let startPanY = 0;
 
 /* =====================================================
-   STORAGE
+   POCKET PLANNER VAULT STORAGE
 ===================================================== */
 
-const STORAGE_KEY = "vault.fandom.spaces";
+const STORAGE_KEY = "fullmoon.pocketplanner.vault";
 
-const FANDOMS_KEY = "vault.fandom.list";
+function getVaultData() {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
 
-function getVaults() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  return (
+    saved || {
+      data: [],
+      updatedAt: Date.now(),
+    }
+  );
 }
 
-function saveVaults(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+function saveVaultData(data) {
+  const payload = {
+    data: data,
+    updatedAt: Date.now(),
+  };
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+
+  notifyDashboardSync();
 }
 
 /* =====================================================
-   FANDOM STORAGE
+   WORLD ACCESS
 ===================================================== */
 
 function getFandoms() {
-  return JSON.parse(localStorage.getItem(FANDOMS_KEY) || "[]");
+  return getVaultData().data;
 }
 
 function saveFandoms(fandoms) {
-  localStorage.setItem(FANDOMS_KEY, JSON.stringify(fandoms));
+  saveVaultData(fandoms);
 }
 
+/* =====================================================
+   POCKET PLANNER SYNC
+===================================================== */
+
+function notifyDashboardSync() {
+  if (window.parent !== window) {
+    window.parent.postMessage(
+      {
+        type: "plannerChanged",
+        planner: STORAGE_KEY,
+      },
+      "*",
+    );
+  }
+}
 /* =====================================================
    CREATE UNIQUE FANDOM ID
 ===================================================== */
@@ -296,12 +323,32 @@ zoomOut.addEventListener("click", () => {
 function loadVault() {
   infiniteCanvas.querySelectorAll(".canvas-item").forEach((el) => el.remove());
 
-  const vaults = getVaults();
+  const vaultData = getVaultData();
 
-  const items = vaults[currentFandom] || [];
+  const world = vaultData.data.find((world) => world.id === currentFandom);
+
+  if (!world) return;
+
+  const items = world.items || [];
 
   items.forEach((item) => {
-    createCanvasItem(item, false);
+    createCanvasItem(
+      {
+        id: item.id,
+        type: item.type,
+
+        left: item.position?.x ?? 2500,
+        top: item.position?.y ?? 2500,
+
+        width: item.size?.width ?? null,
+
+        text: item.content?.text ?? "",
+        src: item.content?.src ?? null,
+
+        pinned: item.pinned ?? false,
+      },
+      false,
+    );
   });
 }
 
@@ -312,6 +359,12 @@ function loadVault() {
 function saveCurrentVault() {
   if (!currentFandom) return;
 
+  const vaultData = getVaultData();
+
+  const world = vaultData.data.find((world) => world.id === currentFandom);
+
+  if (!world) return;
+
   const items = [];
 
   infiniteCanvas.querySelectorAll(".canvas-item").forEach((el) => {
@@ -320,30 +373,35 @@ function saveCurrentVault() {
 
       type: el.dataset.type,
 
-      left: parseFloat(el.style.left),
+      position: {
+        x: parseFloat(el.style.left) || 0,
+        y: parseFloat(el.style.top) || 0,
+      },
 
-      top: parseFloat(el.style.top),
+      size: {
+        width: el.dataset.width ? Number(el.dataset.width) : null,
+      },
 
-      width: el.dataset.width || null,
+      content:
+        el.dataset.type === "image"
+          ? {
+              src: el.querySelector("img")?.src || null,
+            }
+          : {
+              text: el.querySelector(".text-content")?.textContent || "",
+            },
 
-      text:
-        el.dataset.type === "text"
-          ? el.querySelector(".text-content").textContent
-          : null,
-
-      src: el.dataset.type === "image" ? el.querySelector("img").src : null,
+      pinned: el.classList.contains("pinned"),
     };
 
     items.push(item);
   });
 
-  const vaults = getVaults();
+  world.items = items;
+  world.updatedAt = Date.now();
 
-  vaults[currentFandom] = items;
-
-  saveVaults(vaults);
+  saveVaultData(vaultData.data);
 }
-
 /* =====================================================
    CREATE CANVAS ITEM
 ===================================================== */
@@ -356,6 +414,10 @@ function createCanvasItem(data, save = true) {
   element.dataset.id = data.id || crypto.randomUUID();
 
   element.dataset.type = data.type;
+
+  if (data.pinned) {
+    element.classList.add("pinned");
+  }
 
   element.style.left = `${data.left || 2500}px`;
 
@@ -1048,25 +1110,26 @@ manageWorldsList.addEventListener("click", (e) => {
 ===================================================== */
 
 function moveWorld(worldId, direction) {
-  const fandoms = getFandoms();
+  const worlds = getFandoms();
 
-  const index = fandoms.findIndex((fandom) => fandom.id === worldId);
+  const index = worlds.findIndex((world) => world.id === worldId);
 
   if (index === -1) return;
 
   const newIndex = direction === "up" ? index - 1 : index + 1;
 
-  // Already at the top/bottom
-  if (newIndex < 0 || newIndex >= fandoms.length) {
+  if (newIndex < 0 || newIndex >= worlds.length) {
     return;
   }
 
-  // Swap
-  [fandoms[index], fandoms[newIndex]] = [fandoms[newIndex], fandoms[index]];
+  [worlds[index], worlds[newIndex]] = [worlds[newIndex], worlds[index]];
 
-  saveFandoms(fandoms);
+  worlds.forEach((world, index) => {
+    world.order = index;
+  });
 
-  // Refresh both places
+  saveFandoms(worlds);
+
   renderManageWorlds();
   refreshFandomCards();
 }
@@ -1088,23 +1151,26 @@ manageWorldsList.addEventListener("click", (e) => {
 });
 
 function deleteWorld(worldId) {
-  const fandoms = getFandoms();
+  const worlds = getFandoms();
 
-  const fandom = fandoms.find((item) => item.id === worldId);
+  const world = worlds.find((world) => world.id === worldId);
 
-  if (!fandom) return;
+  if (!world) return;
 
   const confirmed = confirm(
-    `Delete "${fandom.name}"?\n\nThis will also remove everything inside this world.`,
+    `Delete "${world.name}"?\n\nThis will also remove everything inside this world.`,
   );
 
   if (!confirmed) return;
 
-  const updatedFandoms = fandoms.filter((item) => item.id !== worldId);
+  const updatedWorlds = worlds.filter((world) => world.id !== worldId);
 
-  saveFandoms(updatedFandoms);
+  updatedWorlds.forEach((world, index) => {
+    world.order = index;
+  });
 
-  /* Remove the world itself */
+  saveFandoms(updatedWorlds);
+
   const card = fandomTrack.querySelector(
     `[data-fandom="${CSS.escape(worldId)}"]`,
   );
@@ -1113,14 +1179,6 @@ function deleteWorld(worldId) {
     card.remove();
   }
 
-  /* Remove its vault contents */
-  const vaults = getVaults();
-
-  delete vaults[worldId];
-
-  saveVaults(vaults);
-
-  /* Refresh popup */
   renderManageWorlds();
 }
 
@@ -1384,8 +1442,15 @@ createFandom.addEventListener("click", () => {
     name: name,
 
     image: imageURL,
-  };
 
+    order: existingFandoms.length,
+
+    items: [],
+
+    createdAt: Date.now(),
+
+    updatedAt: Date.now(),
+  };
   /*
       Save fandom
     */
