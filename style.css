@@ -121,10 +121,6 @@ input {
 
   cursor: pointer;
 
-  transition:
-    transform 0.25s ease,
-    opacity 0.25s ease;
-
   scroll-snap-align: center;
 }
 
@@ -265,8 +261,6 @@ input {
   border-radius: 14px;
 
   cursor: grab;
-
-  transition: background 0.2s ease;
 }
 
 .manage-world-item:hover {
@@ -348,10 +342,6 @@ input {
   color: #888;
 
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
 }
 
 .manage-world-edit:hover {
@@ -448,10 +438,6 @@ input {
 
   font-family: inherit;
 
-  transition:
-    transform 0.25s ease,
-    color 0.2s ease;
-
   scroll-snap-align: center;
 }
 
@@ -477,22 +463,12 @@ input {
   border: 1px dashed #d8d3cb;
 
   background: radial-gradient(circle at center, #faf9f6, #f1eee9);
-
-  transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
 }
 
 .add-fandom-circle svg {
   stroke-width: 1.4;
 
   color: #999;
-
-  transition:
-    transform 0.25s ease,
-    color 0.25s ease;
 }
 
 .add-fandom-card:hover .add-fandom-circle {
@@ -560,13 +536,6 @@ input {
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 /* Lucide plus */
 
@@ -577,10 +546,6 @@ input {
   stroke-width: 1.6;
 
   color: #666;
-
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease;
 }
 
 /* Hover */
@@ -629,13 +594,6 @@ input {
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .edit-worlds-top svg {
@@ -643,10 +601,6 @@ input {
   height: 17px;
 
   stroke-width: 1.6;
-
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease;
 }
 
 .edit-worlds-top:hover {
@@ -708,13 +662,6 @@ input {
 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    opacity 0.2s ease;
 }
 
 .carousel-arrow svg {
@@ -868,10 +815,6 @@ input {
   color: #555;
 
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
 }
 
 .modal-close:hover {
@@ -915,10 +858,6 @@ input {
   color: #222;
 
   font-size: 12px;
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
 }
 
 .fandom-field input::placeholder {
@@ -1064,10 +1003,6 @@ input {
   background: #191919;
 
   color: #fff;
-
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
 }
 
 .modal-primary:hover:not(:disabled) {
@@ -1169,10 +1104,6 @@ input {
   color: #444;
 
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
 }
 
 .icon-btn:hover {
@@ -1408,10 +1339,6 @@ input {
   font-family: inherit;
 
   font-size: 10px;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
 }
 
 .tool-button:hover {
@@ -1473,8 +1400,6 @@ input {
   font-size: 11px;
 
   cursor: pointer;
-
-  transition: background 0.2s ease;
 }
 
 .edit-panel button:hover {
@@ -1888,4 +1813,16 @@ input {
     bottom: 12px;
     font-size: 11px;
   }
+}
+
+#canvasViewport {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
+}
+
+.canvas-item {
+  touch-action: none;
+  will-change: left, top;
 }

@@ -520,9 +520,14 @@ infiniteCanvas.addEventListener("click", () => {
    DRAG ITEMS
 ===================================================== */
 
+let pendingItemX = null;
+let pendingItemY = null;
+let itemAnimationFrame = null;
+
 function startItemDrag(e) {
   if (!editMode) return;
 
+  e.preventDefault();
   e.stopPropagation();
 
   const element = e.currentTarget;
@@ -534,7 +539,6 @@ function startItemDrag(e) {
   const rect = infiniteCanvas.getBoundingClientRect();
 
   const mouseX = (e.clientX - rect.left) / zoom;
-
   const mouseY = (e.clientY - rect.top) / zoom;
 
   dragOffsetX = mouseX - parseFloat(element.style.left);
@@ -546,22 +550,32 @@ function startItemDrag(e) {
   element.addEventListener("pointermove", dragItem);
 
   element.addEventListener("pointerup", stopItemDrag, { once: true });
+
+  element.addEventListener("pointercancel", stopItemDrag, { once: true });
 }
 
 function dragItem(e) {
   if (!draggingItem) return;
 
+  e.preventDefault();
+
   const element = e.currentTarget;
 
   const rect = infiniteCanvas.getBoundingClientRect();
 
-  const mouseX = (e.clientX - rect.left) / zoom;
+  pendingItemX = (e.clientX - rect.left) / zoom - dragOffsetX;
 
-  const mouseY = (e.clientY - rect.top) / zoom;
+  pendingItemY = (e.clientY - rect.top) / zoom - dragOffsetY;
 
-  element.style.left = `${mouseX - dragOffsetX}px`;
+  if (itemAnimationFrame) return;
 
-  element.style.top = `${mouseY - dragOffsetY}px`;
+  itemAnimationFrame = requestAnimationFrame(() => {
+    element.style.left = `${pendingItemX}px`;
+
+    element.style.top = `${pendingItemY}px`;
+
+    itemAnimationFrame = null;
+  });
 }
 
 function stopItemDrag(e) {
@@ -570,6 +584,14 @@ function stopItemDrag(e) {
   const element = e.currentTarget;
 
   element.removeEventListener("pointermove", dragItem);
+
+  if (itemAnimationFrame) {
+    cancelAnimationFrame(itemAnimationFrame);
+
+    itemAnimationFrame = null;
+  }
+
+  element.releasePointerCapture?.(e.pointerId);
 
   saveCurrentVault();
 }
@@ -883,45 +905,70 @@ function setToolbarActive(button) {
    CANVAS PANNING
 ===================================================== */
 
+let pendingPanX = null;
+let pendingPanY = null;
+let panAnimationFrame = null;
+
 canvasViewport.addEventListener("pointerdown", (e) => {
   if (e.target.closest(".canvas-item")) {
     return;
   }
+
+  e.preventDefault();
 
   panningCanvas = true;
 
   canvasViewport.classList.add("grabbing");
 
   panStartX = e.clientX;
-
   panStartY = e.clientY;
 
   startPanX = panX;
-
   startPanY = panY;
+
+  canvasViewport.setPointerCapture?.(e.pointerId);
 });
 
 canvasViewport.addEventListener("pointermove", (e) => {
   if (!panningCanvas) return;
 
-  panX = startPanX + (e.clientX - panStartX);
+  e.preventDefault();
 
-  panY = startPanY + (e.clientY - panStartY);
+  pendingPanX = startPanX + (e.clientX - panStartX);
 
-  updateCanvasTransform();
+  pendingPanY = startPanY + (e.clientY - panStartY);
+
+  if (panAnimationFrame) return;
+
+  panAnimationFrame = requestAnimationFrame(() => {
+    panX = pendingPanX;
+    panY = pendingPanY;
+
+    updateCanvasTransform();
+
+    panAnimationFrame = null;
+  });
 });
 
-canvasViewport.addEventListener("pointerup", () => {
+function stopCanvasPan(e) {
+  if (!panningCanvas) return;
+
   panningCanvas = false;
 
   canvasViewport.classList.remove("grabbing");
-});
 
-canvasViewport.addEventListener("pointercancel", () => {
-  panningCanvas = false;
+  if (panAnimationFrame) {
+    cancelAnimationFrame(panAnimationFrame);
 
-  canvasViewport.classList.remove("grabbing");
-});
+    panAnimationFrame = null;
+  }
+
+  canvasViewport.releasePointerCapture?.(e.pointerId);
+}
+
+canvasViewport.addEventListener("pointerup", stopCanvasPan);
+
+canvasViewport.addEventListener("pointercancel", stopCanvasPan);
 
 /* =====================================================
    MOUSE WHEEL ZOOM
